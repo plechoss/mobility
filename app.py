@@ -223,7 +223,8 @@ m = plot.plot_gps(obfuscated_df, line=False)''', language='python')
 
 map_loading_text = st.text('Obfuscating the data...')
 radius = 1000
-obfuscated_df, shifted_home, shifted_work = privacy.obfuscate(data, [home, work], radius=radius, mode='remove')
+offset = 150
+obfuscated_df, shifted_home, shifted_work = privacy.obfuscate(data, [home, work], radius=radius, offset=offset, mode='remove')
 map_loading_text.text('Plotting the points...')
 m = plot.plot_gps(obfuscated_df, line=True)
 m.fit_bounds(bounds)
