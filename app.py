@@ -44,6 +44,9 @@ def get_michal_data():
     data['id'] = 1
     data['user_id'] = 1
     data = data[data['tracked_at']>='2021-11-24']
+    data = data[(data['latitude']<52.360047) & (data['latitude']>52.032179)]
+    data = data[(data['longitude']<21.411500) & (data['longitude']>20.729284)]
+    
     return data
 
 @st.cache
