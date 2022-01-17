@@ -9,9 +9,7 @@ import requests, io
 from datetime import timedelta
 
 
-sys.path.insert(0, 'base-sdsc-mobility')
 from mobilipy import plot, preparation, waypointsdataframe, segmentation, mode_detection, legs, gtfs_helper, home_work, privacy
-sys.path.remove('base-sdsc-mobility')
 
 
 def plot_person_and_stops(person_latlon, stops_df, person_caption='Sample Zurich location'):
