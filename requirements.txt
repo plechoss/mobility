@@ -4,7 +4,6 @@ pandas
 numpy
 streamlit_folium
 datetime
-mobilipy == 0.1.1
 pytz
 haversine
 scikit-learn
