@@ -218,7 +218,7 @@ st.header('Privacy')
 st.markdown('''The `privacy` module contains two functions that let the user privatize the dataset, namely `obfuscate` and `aggregate`''')
 st.subheader('''`obfuscate`''')
 st.write('This function obfuscates the area of a given radius around home and work locations by either removing all the points in these areas or changing them all to a single, noisy point in these areas.')
-st.code('''obfuscated_df = privacy.obfuscate(data, [home, work], radius=1000, mode='remove')
+st.code('''obfuscated_df = privacy.obfuscate(data, [home, work], radius=1000, offset=offset, mode='remove')
 m = plot.plot_gps(obfuscated_df, line=False)''', language='python')
 
 map_loading_text = st.text('Obfuscating the data...')
