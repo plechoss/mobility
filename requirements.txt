@@ -5,3 +5,11 @@ numpy
 streamlit_folium
 datetime
 mobilipy == 0.1.1
+pytz
+haversine
+scikit-learn
+numba
+shapely
+multiprocessing
+more_itertools
+scikit-fuzzy
