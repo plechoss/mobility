@@ -45,7 +45,7 @@ def get_michal_data():
     data['user_id'] = 1
     data = data[data['tracked_at']>='2021-11-24']
     data = data[(data['latitude']<52.360047) & (data['latitude']>52.032179)]
-    data = data[(data['longitude']<21.211500) & (data['longitude']>20.729284)]
+    data = data[(data['longitude']<21.411500) & (data['longitude']>20.729284)]
     
     return data
 
@@ -78,8 +78,8 @@ def get_legs(data_prepared):
 
 
 st.title('SDSC Mobility Package')
-st.write('The library\'s purpose is to work with raw GPS data (called waypoints). It provides tools to clean the data, split it into trips, detect mode of transport as well as detect home and work locations. In addition to that, it offers a GTFS helper that makes working with GTFS files easier.')
-st.markdown('''We will use sample data from examples in the [scikit-mobility](https://github.com/scikit-mobility/scikit-mobility) library, located [here](https://github.com/scikit-mobility/scikit-mobility/blob/master/examples/geolife_sample.txt.gz).''')
+st.write('The library\'s purpose is to work with raw GPS data (called waypoints). It provides tools to clean the data, split it into trips, detect mode of transport as well as detect home and work locations. It also has two mechanism of protecting users\' privacy. In addition to that, it offers a GTFS helper that makes working with GTFS files easier.')
+st.markdown('''We will use raw GPS data from the author of this app who tracked himself with the [MotionTag](https://motion-tag.com/) app in December 2021''')
 
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.text('Loading data...')
@@ -218,13 +218,12 @@ st.header('Privacy')
 st.markdown('''The `privacy` module contains two functions that let the user privatize the dataset, namely `obfuscate` and `aggregate`''')
 st.subheader('''`obfuscate`''')
 st.write('This function obfuscates the area of a given radius around home and work locations by either removing all the points in these areas or changing them all to a single, noisy point in these areas.')
-st.code('''obfuscated_df = privacy.obfuscate(data, [home, work], radius=1000, offset=200, mode='remove')
+st.code('''obfuscated_df = privacy.obfuscate(data, [home, work], radius=1000, mode='remove')
 m = plot.plot_gps(obfuscated_df, line=False)''', language='python')
 
 map_loading_text = st.text('Obfuscating the data...')
 radius = 1000
-offset = 150
-obfuscated_df, shifted_home, shifted_work = privacy.obfuscate(data, [home, work], radius=radius, offset=offset, mode='remove')
+obfuscated_df, shifted_home, shifted_work = privacy.obfuscate(data, [home, work], radius=radius, mode='remove')
 map_loading_text.text('Plotting the points...')
 m = plot.plot_gps(obfuscated_df, line=True)
 m.fit_bounds(bounds)
