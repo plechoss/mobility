@@ -91,7 +91,7 @@ data_length = raw_data.shape[0]
 # Notify the reader that the data was successfully loaded.
 data_load_state.text('Loading data...done!')
 
-n_rows = st.number_input('Pick a number of waypoints to be loaded:', min_value=0, max_value=data_length, value=5000)
+n_rows = st.number_input(f'Pick a number of waypoints to be loaded (max {str(data_length)}):', min_value=0, max_value=data_length, value=5000)
 
 data = raw_data.head(n_rows)
 
