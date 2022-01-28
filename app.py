@@ -9,7 +9,9 @@ import requests, io
 from datetime import timedelta
 
 
-from mobilipy import plot, preparation, waypointsdataframe, segmentation, mode_detection, legs, gtfs_helper, home_work, privacy
+import sys
+sys.path.insert(0, 'base-sdsc-mobility')
+from mobilipy import plot, preparation, waypointsdataframe, segmentation, mode_detection, legs, gtfs_helper, poi_detection, privacy
 
 
 def plot_person_and_stops(person_latlon, stops_df, person_caption='Sample Zurich location'):
@@ -59,10 +61,20 @@ def get_gtfs_helper():
     return gtfs_helper.GTFS_Helper(directory='./gtfs/')
 
 @st.cache
+def get_gtfs_helper_warsaw():
+    zip_file_url = 'https://mkuran.pl/gtfs/warsaw.zip'
+    r = requests.get(zip_file_url)
+    z = ZipFile(io.BytesIO(r.content))
+    z.extractall("gtfs_warsaw")
+
+    return gtfs_helper.GTFS_Helper(directory='./gtfs_warsaw/')
+
+
+@st.cache
 def get_prepared_data(data):
     return preparation.prepare(data)
     
-@st.cache
+@st.cache(allow_output_mutation=True)
 def get_legs(data_prepared):
     route_clusters_detected = segmentation.segment(data_prepared, use_multiprocessing=False)
 
@@ -71,7 +83,9 @@ def get_legs(data_prepared):
 
     segmentation_stage.text('Getting legs...')
     legs_user = legs.get_user_legs(route_clusters_detected, '1', use_multiprocessing=False)
-    legs_user = legs_user[legs_user.detected_mode.notnull()]
+    legs_user['detected_mode'] = legs_user['detected_mode'].fillna("")
+    legs_user = legs_user.dropna(subset=['geometry'])
+    print(legs_user.iloc[3])
 
     segmentation_stage.text('')
     return legs_user
@@ -178,8 +192,8 @@ folium_static(m)
 #------------------------------------
 st.header('Home and work detection')
 st.markdown('''The home and work detection can be performed with the following line:''')
-st.code('''home_location, work_location = home_work.detect_home_work(legs_user, data_prepared)''', language='python')
-home_location, work_location = home_work.detect_home_work(legs_user, data_prepared)
+st.code('''home_location, work_location = poi_detection.detect_home_work(legs_user, data_prepared)''', language='python')
+home_location, work_location = poi_detection.detect_home_work(legs_user, data_prepared)
 st.markdown('''`legs_user`''')
 st.dataframe(legs_user)
 
@@ -187,7 +201,7 @@ home = home_location
 work = work_location
 
 if(home is not None and work is not None):
-    m = plot.plot_gps(data_prepared, line=True) 
+    m = plot.plot_gps(data_prepared, line=False) 
     folium.Marker(
             location=home,
             popup='Home',
@@ -218,15 +232,14 @@ st.header('Privacy')
 st.markdown('''The `privacy` module contains two functions that let the user privatize the dataset, namely `obfuscate` and `aggregate`''')
 st.subheader('''`obfuscate`''')
 st.write('This function obfuscates the area of a given radius around home and work locations by either removing all the points in these areas or changing them all to a single, noisy point in these areas.')
-st.code('''obfuscated_df = privacy.obfuscate(data, [home, work], radius=1000, offset=offset, mode='remove')
+st.code('''obfuscated_df = privacy.obfuscate(data, [home, work], radius=1000, mode='remove')
 m = plot.plot_gps(obfuscated_df, line=False)''', language='python')
 
 map_loading_text = st.text('Obfuscating the data...')
 radius = 1000
-offset = 150
-obfuscated_df, shifted_home, shifted_work = privacy.obfuscate(data, [home, work], radius=radius, offset=offset, mode='remove')
+obfuscated_df, shifted_home, shifted_work = privacy.obfuscate(data, [home, work], radius=radius, mode='remove')
 map_loading_text.text('Plotting the points...')
-m = plot.plot_gps(obfuscated_df, line=True)
+m = plot.plot_gps(obfuscated_df, line=False)
 m.fit_bounds(bounds)
 folium.Marker(
         location=home,
