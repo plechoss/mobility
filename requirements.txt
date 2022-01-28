@@ -1,5 +1,5 @@
 folium
-mobilipy == 0.1.10
+mobilipy == 0.1.11
 streamlit
 pandas
 numpy
