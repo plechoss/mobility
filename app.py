@@ -91,8 +91,11 @@ def get_legs(data_prepared):
     return legs_user
 
 
-st.title('SDSC Mobility Package')
-st.write('The library\'s purpose is to work with raw GPS data (called waypoints). It provides tools to clean the data, split it into trips, detect mode of transport as well as detect home and work locations. It also has two mechanism of protecting users\' privacy. In addition to that, it offers a GTFS helper that makes working with GTFS files easier.')
+st.title('Mobilipy Python package')
+st.write('This library\'s purpose is to work with raw GPS data (called waypoints). It provides tools to clean the data, split it into trips, detect mode of transport as well as detect home and work locations. It also has two mechanism of protecting users\' privacy. In addition to that, it offers a GTFS helper that makes working with GTFS files easier.')
+st.code('''from mobilipy import gtfs_helper, legs, mode_detection, plot,\\
+        poi_detection, preparation, privacy, segmentation,\\
+        waypointsdataframe''', language='python')
 st.markdown('''We will use raw GPS data from the author of this app who tracked himself with the [MotionTag](https://motion-tag.com/) app in December 2021''')
 
 # Create a text element and let the reader know the data is loading.
