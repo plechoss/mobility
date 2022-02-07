@@ -120,9 +120,9 @@ st.markdown('''`data`''')
 st.dataframe(data.head())
 
 st.markdown('''First, we create a new `WaypointsDataFrame` object from the data.''')
-st.code('''data = waypointsdataframe.WaypointsDataFrame(data, longitude='lng', latitude='lat', tracked_at='datetime', user_id='uid')''', language='python')
+st.code('''data = waypointsdataframe.WaypointsDataFrame(data, longitude='lng', latitude='lat', tracked_at='datetime', user_id='user_id')''', language='python')
 
-data = waypointsdataframe.WaypointsDataFrame(data, longitude='lng', latitude='lat', tracked_at='datetime', user_id='uid')
+data = waypointsdataframe.WaypointsDataFrame(data, longitude='lng', latitude='lat', tracked_at='datetime', user_id='user_id')
 
 st.markdown('''`data`''')
 st.dataframe(data.head())
