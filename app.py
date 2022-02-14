@@ -179,7 +179,7 @@ names = names.set_index('started_at')
 
 get_name = lambda x: names.loc[x, 'name']
 
-selected_timestamps = st.multiselect('Which legs do you want to see?', starting_timestamps, default=starting_timestamps[:5], format_func=get_name)
+selected_timestamps = st.multiselect('Which legs do you want to see?', starting_timestamps, default=starting_timestamps[16:23], format_func=get_name)
 #filter legs df
 selected_legs_user = legs_user[legs_user['started_at'].isin(selected_timestamps)]
 
